@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private async loadPosts(): Promise<void> {
+  /*   private async loadPosts(): Promise<void> {
     let errorResponse: any;
     try {
       this.posts = await this.postService.getPosts();
@@ -36,5 +36,18 @@ export class DashboardComponent implements OnInit {
       errorResponse = error.error;
       this.sharedService.errorLog(errorResponse);
     }
+  } */
+
+  private loadPosts(): void {
+    let errorResponse: any;
+    this.postService.getPosts().subscribe(
+      (posts: PostDTO[]) => {
+        this.posts = posts;
+      },
+      (error: any) => {
+        errorResponse = error.error;
+        this.sharedService.errorLog(errorResponse);
+      }
+    );
   }
 }

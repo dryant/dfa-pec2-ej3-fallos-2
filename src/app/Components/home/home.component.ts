@@ -36,7 +36,7 @@ export class HomeComponent {
       }
     );
   }
-  private async loadPosts(): Promise<void> {
+  /*   private async loadPosts(): Promise<void> {
     let errorResponse: any;
     const userId = this.localStorageService.get('user_id');
     if (userId) {
@@ -48,6 +48,23 @@ export class HomeComponent {
       errorResponse = error.error;
       this.sharedService.errorLog(errorResponse);
     }
+  } */
+
+  private loadPosts(): void {
+    let errorResponse: any;
+    const userId = this.localStorageService.get('user_id');
+    if (userId) {
+      this.showButtons = true;
+    }
+    this.postService.getPosts().subscribe(
+      (posts: PostDTO[]) => {
+        this.posts = posts;
+      },
+      (error: any) => {
+        errorResponse = error.error;
+        this.sharedService.errorLog(errorResponse);
+      }
+    );
   }
 
   async like(postId: string): Promise<void> {
