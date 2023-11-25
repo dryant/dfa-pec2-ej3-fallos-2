@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
 import { CategoryService } from 'src/app/Services/category.service';
@@ -144,20 +145,30 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  private async editPost(): Promise<boolean> {
+  private async editPost(): Promise<Observable<boolean>> {
     let errorResponse: any;
     let responseOK: boolean = false;
     if (this.postId) {
       const userId = this.localStorageService.get('user_id');
       if (userId) {
         this.post.userId = userId;
-        try {
-          await this.postService.updatePost(this.postId, this.post);
-          responseOK = true;
-        } catch (error: any) {
-          errorResponse = error.error;
-          this.sharedService.errorLog(errorResponse);
-        }
+        this.postService.updatePost(this.postId, this.post).subscribe(
+          () => {
+            responseOK = true;
+            this.sharedService.managementToast(
+              'postFeedback',
+              responseOK,
+              errorResponse
+            );
+            if (responseOK) {
+              this.router.navigateByUrl('posts');
+            }
+          },
+          (error: any) => {
+            errorResponse = error.error;
+            this.sharedService.errorLog(errorResponse);
+          }
+        );
 
         await this.sharedService.managementToast(
           'postFeedback',
@@ -170,36 +181,8 @@ export class PostFormComponent implements OnInit {
         }
       }
     }
-    return responseOK;
+    return of(responseOK);
   }
-
-  /* private async createPost(): Promise<boolean> {
-    let errorResponse: any;
-    let responseOK: boolean = false;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.post.userId = userId;
-      try {
-        await this.postService.createPost(this.post);
-        responseOK = true;
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
-
-      await this.sharedService.managementToast(
-        'postFeedback',
-        responseOK,
-        errorResponse
-      );
-
-      if (responseOK) {
-        this.router.navigateByUrl('posts');
-      }
-    }
-
-    return responseOK;
-  } */
 
   private createPost(): void {
     let errorResponse: any;

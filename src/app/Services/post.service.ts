@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { NONE_TYPE } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { PostDTO } from '../Models/post.dto';
 import { Observable } from 'rxjs';
+import { PostDTO } from '../Models/post.dto';
 
 interface updateResponse {
   affected: number;
@@ -42,10 +42,8 @@ export class PostService {
     return this.http.get<PostDTO>(this.urlBlogUocApi + '/' + postId);
   }
 
-  updatePost(postId: string, post: PostDTO): Promise<PostDTO> {
-    return this.http
-      .put<PostDTO>(this.urlBlogUocApi + '/' + postId, post)
-      .toPromise();
+  updatePost(postId: string, post: PostDTO): Observable<PostDTO> {
+    return this.http.put<PostDTO>(this.urlBlogUocApi + '/' + postId, post);
   }
 
   likePost(postId: string): Promise<updateResponse> {
