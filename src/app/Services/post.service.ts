@@ -38,10 +38,8 @@ export class PostService {
     return this.http.post<PostDTO>(this.urlBlogUocApi, post);
   }
 
-  getPostById(postId: string): Promise<PostDTO> {
-    return this.http
-      .get<PostDTO>(this.urlBlogUocApi + '/' + postId)
-      .toPromise();
+  getPostById(postId: string): Observable<PostDTO> {
+    return this.http.get<PostDTO>(this.urlBlogUocApi + '/' + postId);
   }
 
   updatePost(postId: string, post: PostDTO): Promise<PostDTO> {
