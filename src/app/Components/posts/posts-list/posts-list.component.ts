@@ -21,7 +21,7 @@ export class PostsListComponent {
     this.loadPosts();
   }
 
-  private async loadPosts(): Promise<void> {
+  /*   private async loadPosts(): Promise<void> {
     let errorResponse: any;
     const userId = this.localStorageService.get('user_id');
     if (userId) {
@@ -31,6 +31,22 @@ export class PostsListComponent {
         errorResponse = error.error;
         this.sharedService.errorLog(errorResponse);
       }
+    }
+  } */
+
+  private loadPosts(): void {
+    let errorResponse: any;
+    const userId = this.localStorageService.get('user_id');
+    if (userId) {
+      this.postService.getPostsByUserId(userId).subscribe(
+        (posts: PostDTO[]) => {
+          this.posts = posts;
+        },
+        (error: any) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        }
+      );
     }
   }
 

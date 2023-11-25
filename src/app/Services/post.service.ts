@@ -24,18 +24,14 @@ export class PostService {
     this.urlBlogUocApi = 'http://localhost:3000/' + this.controller;
   }
 
-  /*   getPosts(): Promise<PostDTO[]> {
-    return this.http.get<PostDTO[]>(this.urlBlogUocApi).toPromise();
-  } */
-
   getPosts(): Observable<PostDTO[]> {
     return this.http.get<PostDTO[]>(this.urlBlogUocApi);
   }
 
-  getPostsByUserId(userId: string): Promise<PostDTO[]> {
-    return this.http
-      .get<PostDTO[]>('http://localhost:3000/users/posts/' + userId)
-      .toPromise();
+  getPostsByUserId(userId: string): Observable<PostDTO[]> {
+    return this.http.get<PostDTO[]>(
+      'http://localhost:3000/users/posts/' + userId
+    );
   }
 
   createPost(post: PostDTO): Promise<PostDTO> {
