@@ -34,8 +34,8 @@ export class PostService {
     );
   }
 
-  createPost(post: PostDTO): Promise<PostDTO> {
-    return this.http.post<PostDTO>(this.urlBlogUocApi, post).toPromise();
+  createPost(post: PostDTO): Observable<PostDTO> {
+    return this.http.post<PostDTO>(this.urlBlogUocApi, post);
   }
 
   getPostById(postId: string): Promise<PostDTO> {

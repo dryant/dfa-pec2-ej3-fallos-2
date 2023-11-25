@@ -170,7 +170,7 @@ export class PostFormComponent implements OnInit {
     return responseOK;
   }
 
-  private async createPost(): Promise<boolean> {
+  /* private async createPost(): Promise<boolean> {
     let errorResponse: any;
     let responseOK: boolean = false;
     const userId = this.localStorageService.get('user_id');
@@ -196,9 +196,31 @@ export class PostFormComponent implements OnInit {
     }
 
     return responseOK;
+  } */
+
+  private createPost(): void {
+    let errorResponse: any;
+    const userId = this.localStorageService.get('user_id');
+    if (userId) {
+      this.post.userId = userId;
+      this.postService.createPost(this.post).subscribe(
+        () => {
+          this.sharedService.managementToast(
+            'postFeedback',
+            true,
+            errorResponse
+          );
+          this.router.navigateByUrl('posts');
+        },
+        (error: any) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        }
+      );
+    }
   }
 
-  async savePost() {
+  savePost() {
     this.isValidForm = false;
 
     if (this.postForm.invalid) {
@@ -209,9 +231,9 @@ export class PostFormComponent implements OnInit {
     this.post = this.postForm.value;
 
     if (this.isUpdateMode) {
-      this.validRequest = await this.editPost();
+      this.editPost();
     } else {
-      this.validRequest = await this.createPost();
+      this.createPost();
     }
   }
 }
