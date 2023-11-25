@@ -67,25 +67,29 @@ export class HomeComponent {
     );
   }
 
-  async like(postId: string): Promise<void> {
+  like(postId: string): void {
     let errorResponse: any;
-    try {
-      await this.postService.likePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+    this.postService.likePost(postId).subscribe(
+      () => {
+        this.loadPosts();
+      },
+      (error: any) => {
+        errorResponse = error.error;
+        this.sharedService.errorLog(errorResponse);
+      }
+    );
   }
 
-  async dislike(postId: string): Promise<void> {
+  dislike(postId: string): void {
     let errorResponse: any;
-    try {
-      await this.postService.dislikePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+    this.postService.dislikePost(postId).subscribe(
+      () => {
+        this.loadPosts();
+      },
+      (error: any) => {
+        errorResponse = error.error;
+        this.sharedService.errorLog(errorResponse);
+      }
+    );
   }
 }

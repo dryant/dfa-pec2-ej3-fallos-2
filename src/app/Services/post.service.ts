@@ -46,16 +46,18 @@ export class PostService {
     return this.http.put<PostDTO>(this.urlBlogUocApi + '/' + postId, post);
   }
 
-  likePost(postId: string): Promise<updateResponse> {
-    return this.http
-      .put<updateResponse>(this.urlBlogUocApi + '/like/' + postId, NONE_TYPE)
-      .toPromise();
+  likePost(postId: string): Observable<updateResponse> {
+    return this.http.put<updateResponse>(
+      this.urlBlogUocApi + '/like/' + postId,
+      NONE_TYPE
+    );
   }
 
-  dislikePost(postId: string): Promise<updateResponse> {
-    return this.http
-      .put<updateResponse>(this.urlBlogUocApi + '/dislike/' + postId, NONE_TYPE)
-      .toPromise();
+  dislikePost(postId: string): Observable<updateResponse> {
+    return this.http.put<updateResponse>(
+      this.urlBlogUocApi + '/dislike/' + postId,
+      NONE_TYPE
+    );
   }
 
   deletePost(postId: string): Promise<deleteResponse> {
