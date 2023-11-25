@@ -45,21 +45,23 @@ export class PostsListComponent {
     this.router.navigateByUrl('/user/post/' + postId);
   }
 
-  async deletePost(postId: string): Promise<void> {
+  deletePost(postId: string): void {
     let errorResponse: any;
 
     // show confirmation popup
     let result = confirm('Confirm delete post with id: ' + postId + ' .');
     if (result) {
-      try {
-        const rowsAffected = await this.postService.deletePost(postId);
-        if (rowsAffected.affected > 0) {
-          this.loadPosts();
+      this.postService.deletePost(postId).subscribe(
+        (rowsAffected: any) => {
+          if (rowsAffected.affected > 0) {
+            this.loadPosts();
+          }
+        },
+        (error: any) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
         }
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
+      );
     }
   }
 }

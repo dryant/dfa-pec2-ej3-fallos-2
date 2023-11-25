@@ -60,9 +60,7 @@ export class PostService {
     );
   }
 
-  deletePost(postId: string): Promise<deleteResponse> {
-    return this.http
-      .delete<deleteResponse>(this.urlBlogUocApi + '/' + postId)
-      .toPromise();
+  deletePost(postId: string): Observable<deleteResponse> {
+    return this.http.delete<deleteResponse>(this.urlBlogUocApi + '/' + postId);
   }
 }
